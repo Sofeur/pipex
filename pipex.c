@@ -2,6 +2,23 @@
 
 #include "pipex.h"
 
+int	ft_str_is_space(char *str)
+{
+	int	i;
+
+	if (!str)
+		return (1);
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	exec(char *cmd, char **env)
 {
 	char	**s_cmd;
@@ -47,6 +64,12 @@ int	main(int ac, char **av, char **env)
 
 	if (ac != 5)
 		exit_handler(1);
+	if (!av[2] || !av[3] || ft_str_is_space(av[2]) || ft_str_is_space(av[3]))
+	{
+		ft_putstr_fd("pipex: commande vide non autorisée\n", 2);
+		exit(1);
+	}
+	
 	if (pipe(p_fd) == -1)
 		exit(-1);
 	pid = fork();
